@@ -25,7 +25,7 @@ class OHEncoder:
     
 
 class SequenceDataset(Dataset):
-    def __init__(self, df, oh_encoder):
+    def __init__(self, df, oh_encoder, test=False):
         """ DataFrame must have columns:
           - sequence (with nucleotide sequence)
           - rna_dna_ratio (continous value, float)
@@ -33,6 +33,7 @@ class SequenceDataset(Dataset):
         """
         self.df = df.reset_index(drop=True)
         self.oh_encoder = oh_encoder
+        self.test = test
 
     def __len__(self):
         return len(self.df)
@@ -43,6 +44,8 @@ class SequenceDataset(Dataset):
         oh = self.oh_encoder(seq)  # shape (1, 4, seq_len)
         if oh is None:
             return None
+        if self.test:
+            return seq, oh
         label_cls = float(row['is_active'])
         label_reg = float(row['rna_dna_ratio'])
         return seq, oh, torch.tensor(label_cls, dtype=torch.float32), torch.tensor(label_reg, dtype=torch.float32)
@@ -54,6 +57,10 @@ def collate_fn(batch):
     batch = [item for item in batch if item is not None]
     if len(batch) == 0:
         return None
+    elif len(batch[0]) == 2:
+        raw_seqs, oh_list = zip(*batch)
+        oh_tensor = torch.cat(oh_list, dim=0)
+        return list(raw_seqs), oh_tensor
     raw_seqs, oh_list, y_cls, y_reg = zip(*batch)
     oh_tensor = torch.cat(oh_list, dim=0)  # shape: (B, 1, 4, seq_len)
     y_cls = torch.stack(y_cls)

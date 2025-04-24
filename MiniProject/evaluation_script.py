@@ -11,7 +11,7 @@ from new_dataset import SequenceDataset, OHEncoder, collate_fn
 def load_data(dataset):
     df = pd.read_csv(dataset, sep='\t')
     oh_encoder = OHEncoder()
-    dataset = SequenceDataset(df, oh_encoder)
+    dataset = SequenceDataset(df, oh_encoder, test=True)
     loader = DataLoader(dataset, batch_size=1024, shuffle=False, collate_fn=collate_fn)
     return loader
 
@@ -20,7 +20,8 @@ def eval(loader, model):
     y_reg = []
     model.eval()
     with torch.no_grad():
-        for raw_seqs, oh_tensor, _, _ in loader:
+        for batch in loader:
+            raw_seqs, oh_tensor = batch[0], batch[1]
             oh_tensor = oh_tensor.to(DEVICE)
             x = torch.cat([oh_tensor.squeeze(1), torch.zeros((oh_tensor.shape[0], 1, oh_tensor.shape[-1]), device=DEVICE), torch.zeros((oh_tensor.shape[0], 1, oh_tensor.shape[-1]), device=DEVICE)], dim=1)
             y_cls_pred, y_reg_pred = model(x)
@@ -51,15 +52,10 @@ if __name__ == "__main__":
         pool_dim=8,
         standalone=True
         ).to(DEVICE)
-    model.load_state_dict(torch.load(args.model))
+    model.load_state_dict(torch.load(args.model, map_location=DEVICE))
     model.eval()
     loader = load_data(args.dataset)
     pred_cls, pred_reg = eval(loader, model)
-    output_file = "predictions.tsv"
-    with open(output_file, mode="w", newline="") as file:
-        writer = csv.writer(file, delimiter="\t")
-        writer.writerow(["id", "cls", "reg"])
-        for i, (y_cls, y_reg) in enumerate(zip(pred_cls, pred_reg)):
-            writer.writerow([i, y_cls[0], y_reg[0]])
-    
-    print(f"Predictions saved to {output_file}")
+    print("id\tpredicted_is_active\tpredicted_rna_dna_ratio")
+    for i in range(pred_cls.shape[0]):
+        print(f"{i}\t{pred_cls[i][0]}\t{pred_reg[i][0]}")
