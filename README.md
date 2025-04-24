@@ -17,7 +17,7 @@ path_to_test_data is a tsv file containing two columns:
 * id (iunique sequence id)
 * sequence (sequence length 271)
 
-The resulting file, on the other hand, will contain 3 columns:
+The results, on the other hand, will contain 3 columns:
 * id (unique sequence id)
 * cls (value 0, or 1 corresponding to the is_active column)
 * reg (continuous value corresponding to the rna_dna_ratio column)
