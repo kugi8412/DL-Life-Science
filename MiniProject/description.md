@@ -1,4 +1,4 @@
-# DL-Life-Science
+# DL-MiniProject
  Modeling 🧬 Sequence Determinants of Regulatory Activity.
 
 ## Approach
