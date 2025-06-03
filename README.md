@@ -8,3 +8,5 @@ The goal of this project is to develop a Convolutional Neural Network (CNN) to a
 * Ronneberger 0, Fischer P, Brox T. (2015) U-Net: Convolutional Networks for Biomedical Image Segmentation, [MICCAI 2015, 234–241](https://link.springer.com/chapter/10.1007/978-3-319-24574-4_28)
 * Falk T, Brox T, Ronneberger O et al. (2019) U-Net: deep learning for cell counting, detection, and morphometry, [Nature Methods 16, 67-70](https://www.nature.com/articles/s41592-018-0261-2)
 * Ulman V, Maška M, Harder N, Rohr K, Kozubek M, Ortiz-de-Solorzano C, et al. (2017) An objective comparison of cell-tracking algorithms, [Nature Methods 14, 1141–1152](https://www.nature.com/articles/nmeth.4473)
+
+### Results
