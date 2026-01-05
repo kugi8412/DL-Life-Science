@@ -10,3 +10,10 @@ The goal of this project is to develop a Convolutional Neural Network (CNN) to a
 * Ulman V, Maška M, Harder N, Rohr K, Kozubek M, Ortiz-de-Solorzano C, et al. (2017) An objective comparison of cell-tracking algorithms, [Nature Methods 14, 1141–1152](https://www.nature.com/articles/nmeth.4473)
 
 ### Results
+<img src="./Image.png" alt="UNET-best" />
+
+After validating the results together and testing various architectures, Vanilla U-Net running on fixed patches instead of random crop proved to be the most stable and best solution on the tested data sets. This approach allowed the model to see more data, which translated into a slightly better average result on each of the three sets of data.
+
+**Architectures:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/kugi8412/DL-Life-Science/blob/main/Various_CNN.ipynb)
+
+**Solution:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/kugi8412/DL-Life-Science/blob/main/CNNcellSegm.ipynb)
